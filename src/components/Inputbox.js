@@ -1,10 +1,9 @@
+import { TextField } from '@material-ui/core';
+
 export default function InputBox(props) {
     return (
         <div>
-            <input 
-                type="text"
-                onChange={ props.onChangePokemon }
-            ></input>
+            <TextField fullWidth label="Filled" variant="filled" onChange={ props.onChangePokemon }/>
         </div>
     )
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Card } from '@material-ui/core';
 
 export default function Pokemon(props) {
     const { name } = props.pokemon;
@@ -23,7 +24,7 @@ export default function Pokemon(props) {
     }, [])
 
     return (
-        <>
+        <Card>
             {
                 pokemonData &&
                 <div>
@@ -38,7 +39,7 @@ export default function Pokemon(props) {
                     </Link>
                 </div>
             }
-        </>
+        </Card>
     )
 }
 

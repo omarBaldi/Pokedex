@@ -5,22 +5,24 @@ import InputBox from './components/Inputbox';
 import Pokemon from './components/Pokemon';
 import PokemonInfo from './components/PokemonInfo';
 import { Route } from 'react-router-dom';
+import { Container, Grid } from '@material-ui/core';
+
 
 function App() {
 
-  const [pokemonToSearch, setPokemonToSearch] = useState('');
-  const [pokemonsArray, setPokemonsArray] = useState([]);
-  const [filteredPokemonsArray, setFilteredPokemonsArray] = useState([]);
+	const [pokemonToSearch, setPokemonToSearch] = useState('');
+	const [pokemonsArray, setPokemonsArray] = useState([]);
+	const [filteredPokemonsArray, setFilteredPokemonsArray] = useState([]);
 
-  const handleInputChange = (e) => {
-    const currentText = e.target.value;
-    setPokemonToSearch(currentText);
-  }
+	const handleInputChange = (e) => {
+		const currentText = e.target.value;
+		setPokemonToSearch(currentText);
+	}
 
   const getPokemons = async () => {
-    const response = await axios({
-      method: 'GET',
-      url: 'https://pokeapi.co/api/v2/pokemon?limit=6'
+	const response = await axios({
+    	method: 'GET',
+      	url: 'https://pokeapi.co/api/v2/pokemon?limit=151'
     })
     
     const { results } = response.data;
@@ -46,19 +48,27 @@ function App() {
   }, [pokemonToSearch])
 
   return (
-	<div>
+	<Container>
+
     	<InputBox onChangePokemon={handleInputChange} />
-      	<div>
-			{
-				filteredPokemonsArray.map((pokemon, index) => {
-					return (
-						<Pokemon key={index} pokemon={pokemon} />
-					)
-				})
-			}
-      	</div>
+
+		<Grid item xs={12}>
+			<Grid container justify="center" spacing={3}>
+				{
+					filteredPokemonsArray.map((pokemon, index) => {
+						return (
+							<Grid key={index} item xs={4}>
+								<Pokemon pokemon={pokemon} />
+							</Grid>
+						)
+					})
+				}
+			</Grid>
+		</Grid>
+
 		<Route exact path="/pokemon/:name" component={PokemonInfo} />
-    </div>
+
+    </Container>
   );
 }
 
