@@ -1,8 +1,10 @@
 import './App.css';
 import { useState, useEffect, useMemo } from 'react';
-//import axios from 'axios';
-import InputBox from './components/Inputbox';
 import axios from 'axios';
+import InputBox from './components/Inputbox';
+import Pokemon from './components/Pokemon';
+import PokemonInfo from './components/PokemonInfo';
+import { Route } from 'react-router-dom';
 
 function App() {
 
@@ -18,22 +20,24 @@ function App() {
   const getPokemons = async () => {
     const response = await axios({
       method: 'GET',
-      url: 'https://pokeapi.co/api/v2/pokemon?limit=10'
-    });
+      url: 'https://pokeapi.co/api/v2/pokemon?limit=6'
+    })
+    
     const { results } = response.data;
     return results;
-  }
+  }  
 
   useEffect(() => {
     (async () => {
       const pokemonsList = await getPokemons();
       setPokemonsArray(pokemonsList);
+      setFilteredPokemonsArray(pokemonsList);
     })();
-  });
+  }, []);
 
   useMemo(() => {
     if (!pokemonToSearch) {
-      return setFilteredPokemonsArray(pokemonsArray)
+      return setFilteredPokemonsArray(pokemonsArray);
     }
 
     const searchForPokemon = pokemonsArray.filter(pokemon => pokemon.name.includes(pokemonToSearch));
@@ -42,17 +46,18 @@ function App() {
   }, [pokemonToSearch])
 
   return (
-    <div>
-      <InputBox 
-        onChangePokemon={handleInputChange}
-      />
-      <div>
-        {filteredPokemonsArray.map((pokemon, index) => {
-          return (
-            <div key={index}>{pokemon.name}</div>
-          )
-        })}
-      </div>
+	<div>
+    	<InputBox onChangePokemon={handleInputChange} />
+      	<div>
+			{
+				filteredPokemonsArray.map((pokemon, index) => {
+					return (
+						<Pokemon key={index} pokemon={pokemon} />
+					)
+				})
+			}
+      	</div>
+		<Route exact path="/pokemon/:name" component={PokemonInfo} />
     </div>
   );
 }
