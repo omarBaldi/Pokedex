@@ -8,6 +8,7 @@ export default function About(props) {
 
     return (
         <div>
+            <h4>Show pokemon info for {pokemonInfo.name} </h4>
             <ul>
                 {
                     pokemonInfo.abilities.map((ability, index) => {

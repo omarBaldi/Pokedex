@@ -7,7 +7,6 @@ import PokemonInfo from './components/PokemonInfo';
 import { Route } from 'react-router-dom';
 import { Container, Grid } from '@material-ui/core';
 
-
 function App() {
 
 	const [pokemonToSearch, setPokemonToSearch] = useState('');
@@ -19,57 +18,59 @@ function App() {
 		setPokemonToSearch(currentText);
 	}
 
-  const getPokemons = async () => {
-	const response = await axios({
-    	method: 'GET',
-      	url: 'https://pokeapi.co/api/v2/pokemon?limit=151'
-    })
-    
-    const { results } = response.data;
-    return results;
-  }  
+	const getPokemons = async () => {
+		const response = await axios({
+			method: 'GET',
+			url: 'https://pokeapi.co/api/v2/pokemon?limit=7'
+		})
+		
+		const { results } = response.data;
+		return results;
+	}  
 
-  useEffect(() => {
-    (async () => {
-      const pokemonsList = await getPokemons();
-      setPokemonsArray(pokemonsList);
-      setFilteredPokemonsArray(pokemonsList);
-    })();
-  }, []);
+	useEffect(() => {
+		(async () => {
+		const pokemonsList = await getPokemons();
+		setPokemonsArray(pokemonsList);
+		setFilteredPokemonsArray(pokemonsList);
+		})();
+	}, []);
 
-  useMemo(() => {
-    if (!pokemonToSearch) {
-      return setFilteredPokemonsArray(pokemonsArray);
-    }
+	useMemo(() => {
+		if (!pokemonToSearch) {
+			return setFilteredPokemonsArray(pokemonsArray);
+		}
 
-    const searchForPokemon = pokemonsArray.filter(pokemon => pokemon.name.includes(pokemonToSearch));
-    setFilteredPokemonsArray(searchForPokemon);
+		const searchForPokemon = pokemonsArray.filter(pokemon => pokemon.name.includes(pokemonToSearch));
+		setFilteredPokemonsArray(searchForPokemon);
 
-  }, [pokemonToSearch])
+	}, [pokemonToSearch])
 
-  return (
-	<Container>
+	return (
+		<Container>
 
-    	<InputBox onChangePokemon={handleInputChange} />
+			<InputBox onChangePokemon={handleInputChange} />
 
-		<Grid item xs={12}>
-			<Grid container justify="center" spacing={3}>
-				{
-					filteredPokemonsArray.map((pokemon, index) => {
-						return (
-							<Grid key={index} item xs={4}>
-								<Pokemon pokemon={pokemon} />
-							</Grid>
-						)
-					})
-				}
+			<Grid container spacing={2}>
+				<Grid item xs={12}>
+					<Grid container justify="center">
+						{
+							filteredPokemonsArray.map((pokemon, index) => {
+								return (
+									<div key={index}>
+										<Pokemon pokemon={pokemon} />
+									</div>
+								)
+							})
+						}
+					</Grid>
+				</Grid>
 			</Grid>
-		</Grid>
 
-		<Route exact path="/pokemon/:name" component={PokemonInfo} />
+			<Route exact path="/pokemon/:name" component={PokemonInfo} />
 
-    </Container>
-  );
+		</Container>
+	);
 }
 
 export default App;
