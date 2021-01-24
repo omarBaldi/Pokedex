@@ -21,7 +21,7 @@ function App() {
 	const getPokemons = async () => {
 		const response = await axios({
 			method: 'GET',
-			url: 'https://pokeapi.co/api/v2/pokemon?limit=7'
+			url: 'https://pokeapi.co/api/v2/pokemon?limit=151'
 		})
 		
 		const { results } = response.data;

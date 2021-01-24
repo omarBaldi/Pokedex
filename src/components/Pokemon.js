@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, Typography, Button, Box, IconButton } from '@material-ui/core';
+import { Card, CardContent, Typography, Button, Box, IconButton, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import RotateIcon from '@material-ui/icons/RotateRight';
 
 const useStyles = makeStyles({
     root: {
         maxWidth: 350,
-        minHeight: 350,
+        minHeight: 400,
         position: 'relative'
     },
     button: {
@@ -26,6 +26,13 @@ const useStyles = makeStyles({
         position: 'absolute',
         top: 0,
         right: 10
+    },
+    chipGroup: {
+        marginBottom: 20,
+        marginTop: 20,
+        '& > *': {
+            marginRight: 5,
+        },
     }
 });
 
@@ -62,7 +69,6 @@ export default function Pokemon(props) {
             const pokemonDescription = await getPokemonDescription(pokemonData.species.url);
             pokemonData["pokemonDescription"] = pokemonDescription;
             setPokemonData(pokemonData);
-            console.log(pokemonData);
         })();
     }, [name])
 
@@ -86,6 +92,15 @@ export default function Pokemon(props) {
                                 ` 
                             }
                         </Typography>
+                        <div className={classes.chipGroup}>
+                            {
+                                pokemonData.types.map((type, index) => {
+                                    return (
+                                        <Chip key={index} label={type.type.name} mr={2}/>
+                                    )
+                                })
+                            }
+                        </div>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {pokemonData.pokemonDescription}
                         </Typography>
