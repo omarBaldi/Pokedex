@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, Typography, Button, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles'
+import { Card, CardContent, Typography, Button, Box, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import RotateIcon from '@material-ui/icons/RotateRight';
 
 const useStyles = makeStyles({
     root: {
         maxWidth: 350,
-        minHeight: 300,
+        minHeight: 350,
         position: 'relative'
     },
     button: {
@@ -20,6 +21,11 @@ const useStyles = makeStyles({
         '&:hover': {
             background: "lightgrey",
         },
+    },
+    iconRotate: {
+        position: 'absolute',
+        top: 0,
+        right: 10
     }
 });
 
@@ -27,6 +33,7 @@ export default function Pokemon(props) {
     const classes = useStyles();
     const { name } = props.pokemon;
     const [pokemonData, setPokemonData] = useState();
+    const [pokemonBack, setPokemonBack] = useState(false);
 
     const getPokemon = async () => {
         const response = await axios({
@@ -55,6 +62,7 @@ export default function Pokemon(props) {
             const pokemonDescription = await getPokemonDescription(pokemonData.species.url);
             pokemonData["pokemonDescription"] = pokemonDescription;
             setPokemonData(pokemonData);
+            console.log(pokemonData);
         })();
     }, [name])
 
@@ -63,9 +71,15 @@ export default function Pokemon(props) {
             {
                 pokemonData &&
                 <Card className={classes.root}>
-                    <img src={pokemonData.sprites.front_default}></img>
+                    <img src={!pokemonBack ? pokemonData.sprites.front_default : pokemonData.sprites.back_default}></img>
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
+                        <IconButton className={classes.iconRotate} onClick={() => setPokemonBack((value) => !value)}>
+                            <RotateIcon />
+                        </IconButton>
+                        <Typography variant="h4">
+                            #{pokemonData.id}
+                        </Typography>
+                        <Typography gutterBottom variant="h5">
                             { 
                                 `
                                     ${name.split('')[0].toUpperCase() + name.slice(1)}

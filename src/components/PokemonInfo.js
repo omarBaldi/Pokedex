@@ -8,6 +8,7 @@ export default function About(props) {
     const { info: pokemonInfo } = data.state;
     const [showSidebar, setShowSideBar] = useState(false);
 
+
     useEffect(() => {
         changeSideBarValue(true);
     }, [pokemonInfo]);
