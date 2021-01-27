@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './App.css';
 import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';

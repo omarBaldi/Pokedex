@@ -69,6 +69,7 @@ export default function Pokemon(props) {
             const pokemonDescription = await getPokemonDescription(pokemonData.species.url);
             pokemonData["pokemonDescription"] = pokemonDescription;
             setPokemonData(pokemonData);
+            console.log(pokemonData);
         })();
     }, [name])
 
@@ -77,7 +78,7 @@ export default function Pokemon(props) {
             {
                 pokemonData &&
                 <Card className={classes.root}>
-                    <img src={!pokemonBack ? pokemonData.sprites.front_default : pokemonData.sprites.back_default}></img>
+                    <img src={!pokemonBack ? pokemonData.sprites.front_default : pokemonData.sprites.back_default} alt=""></img>
                     <CardContent>
                         <IconButton className={classes.iconRotate} onClick={() => setPokemonBack((value) => !value)}>
                             <RotateIcon />
@@ -115,11 +116,7 @@ export default function Pokemon(props) {
                             size="large"
                             className={classes.button}
                             fullWidth={true}
-                            variant="outlined" 
-                            to={{
-                                pathname: `/pokemon/${name}`,
-                                state: {info: pokemonData}
-                            }}
+                            variant="outlined"
                         >
                             View info
                         </Button>

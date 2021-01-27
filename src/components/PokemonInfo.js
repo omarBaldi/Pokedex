@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
-import { Drawer, Card } from '@material-ui/core';
+import { Drawer, Card, Typography, List, ListItem, Divider  } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ChartStats from './Chart';
 
 const useStyles = makeStyles({
     root: {
       minWidth: 600,
-    }
+      height: 'inherit',
+      textAlign: 'center'
+    },
+    abilitiesContainer: {
+        width: '100%',
+    },
   });
 
 export default function About(props) {
@@ -16,6 +22,7 @@ export default function About(props) {
     const { info: pokemonInfo } = data.state;
     const [showSidebar, setShowSideBar] = useState(false);
 
+    const pokemonStatsArray = pokemonInfo.stats.map(stat => stat.base_stat);
 
     useEffect(() => {
         changeSideBarValue(true);
@@ -32,18 +39,49 @@ export default function About(props) {
     return (
         <Drawer open={showSidebar} onClose={() => changeSideBarValue(false)}>
             <Card className={classes.root}>
-                <h4>Show pokemon info for {pokemonInfo.name} </h4>
-                <ul>
+
+                <Typography variant="h3">
+                    {pokemonInfo.name}
+                </Typography>
+
+                <Divider />
+
+                <List >
+                    <Typography variant="h5">Pokemon abilities</Typography>
                     {
                         pokemonInfo.abilities.map((ability, index) => {
                             return (
-                                <li key={index}>
-                                    {ability.ability.name}
-                                </li>
+                                <ListItem key={index}>
+                                    <Typography variant="h5">
+                                        {ability.ability.name}
+                                    </Typography>
+                                </ListItem>
                             )
                         })
                     }
+                </List>
+
+                <Divider />
+
+
+                <p>Experience: {pokemonInfo.base_experience}</p>
+                <p>Height: {pokemonInfo.height}</p>
+                <ul>
+                    Stats
+                    {
+                        pokemonInfo.stats.forEach((stat, index) => {
+                            /* return (
+                                <li key={index}>
+                                    {stat.stat.name}
+                                    -
+                                    {stat.base_stat}
+                                </li>
+                            ) */
+                        })
+                    }
                 </ul>
+                <ChartStats data={pokemonStatsArray} />
+                <img src={pokemonInfo.sprites.front_shiny} alt="" className={classes.imagePokemon}></img >
             </Card>
         </Drawer>
     )
