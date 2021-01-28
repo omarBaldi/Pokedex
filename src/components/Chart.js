@@ -1,15 +1,14 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js';
 
 export default function ChartStats(props) {
 
     const { data: pokemonStat, label: pokemonLabel } = props;
+    const pokemonChart = useRef();
 
     useEffect(() => {
-        const pokemonStatsChart = document.querySelector('canvas');
-
-        new Chart(pokemonStatsChart, {
+        new Chart(pokemonChart.current, {
             type: 'radar',
             data: {
                 labels: pokemonLabel,
@@ -64,7 +63,7 @@ export default function ChartStats(props) {
 
     return (
         <div>
-            <canvas id="myChart" height="350" width="350"></canvas>
+            <canvas id="myChart" height="350" width="350" ref={pokemonChart}></canvas>
         </div>
     )
 }
