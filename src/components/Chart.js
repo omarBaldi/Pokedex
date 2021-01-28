@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import Chart from 'chart.js';
 
 export default function ChartStats(props) {
 
-    const pokemonStat = props.data;
+    const { data: pokemonStat, label: pokemonLabel } = props;
 
     useEffect(() => {
         const pokemonStatsChart = document.querySelector('canvas');
@@ -11,9 +12,8 @@ export default function ChartStats(props) {
         new Chart(pokemonStatsChart, {
             type: 'radar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: pokemonLabel,
                 datasets: [{
-                    label: '# of Votes',
                     data: pokemonStat,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -35,10 +35,26 @@ export default function ChartStats(props) {
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
                 scales: {
-                    yAxes: [{
+                    xAxes: [{
+                        gridLines: {
+                            display: false,
+                        },
                         ticks: {
-                            beginAtZero: true
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false,
+                        },
+                        ticks: {
+                            display: false
                         }
                     }]
                 }
@@ -48,7 +64,7 @@ export default function ChartStats(props) {
 
     return (
         <div>
-            <canvas id="myChart" width="400" height="400"></canvas>
+            <canvas id="myChart" height="350" width="350"></canvas>
         </div>
     )
 }

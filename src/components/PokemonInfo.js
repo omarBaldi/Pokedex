@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { Drawer, Card, Typography, List, ListItem, Divider, IconButton, Tooltip } from '@material-ui/core';
@@ -7,7 +8,7 @@ import ChartStats from './Chart';
 
 const useStyles = makeStyles({
     root: {
-      minWidth: 600,
+      minWidth: 500,
       height: 'inherit',
       textAlign: 'center',
       position: 'relative'
@@ -37,7 +38,10 @@ export default function About(props) {
     const [showSidebar, setShowSideBar] = useState(false);
     const [shiny, setShiny] = useState(false);
 
-    const pokemonStatsArray = pokemonInfo.stats.map(stat => stat.base_stat);
+    const pokemonChartData = {
+        numbers: pokemonInfo.stats.map(stat => stat.base_stat),
+        labels: pokemonInfo.stats.map(stat => stat.stat.name)
+    };
 
     useEffect(() => {
         changeSideBarValue(true);
@@ -98,10 +102,10 @@ export default function About(props) {
 
                 <Divider />
 
-
                 <p>Experience: {pokemonInfo.base_experience}</p>
                 <p>Height: {pokemonInfo.height}</p>
-                <ChartStats data={pokemonStatsArray} />
+
+                <ChartStats data={pokemonChartData.numbers} label={pokemonChartData.labels} />
             </Card>
         </Drawer>
     )
