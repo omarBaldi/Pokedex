@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
-import { Drawer, Card, Typography, List, ListItem, Divider  } from '@material-ui/core';
+import { Drawer, Card, Typography, List, ListItem, Divider, IconButton, Tooltip } from '@material-ui/core';
+import { Star as StarFull, StarBorderOutlined as StarEmpty } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import ChartStats from './Chart';
 
@@ -8,11 +9,24 @@ const useStyles = makeStyles({
     root: {
       minWidth: 600,
       height: 'inherit',
-      textAlign: 'center'
+      textAlign: 'center',
+      position: 'relative'
     },
     abilitiesContainer: {
         width: '100%',
     },
+    imagePokemon: {
+        minWidth: 150,
+        marginBottom: -25
+    },
+    starIcon: {
+        position: 'absolute',
+        top: 10,
+        right: 25,
+    },
+    starShiny: {
+        color: 'yellow'
+    }
   });
 
 export default function About(props) {
@@ -21,6 +35,7 @@ export default function About(props) {
     const data = useLocation();
     const { info: pokemonInfo } = data.state;
     const [showSidebar, setShowSideBar] = useState(false);
+    const [shiny, setShiny] = useState(false);
 
     const pokemonStatsArray = pokemonInfo.stats.map(stat => stat.base_stat);
 
@@ -40,7 +55,27 @@ export default function About(props) {
         <Drawer open={showSidebar} onClose={() => changeSideBarValue(false)}>
             <Card className={classes.root}>
 
-                <Typography variant="h3">
+                <Tooltip title={!shiny ? 'Show shiny version' : 'Show normal version'}>
+                    <IconButton 
+                        disableRipple={true} 
+                        disableFocusRipple={true} 
+                        onClick={() => setShiny(!shiny)} 
+                        className={`
+                            ${classes.starIcon}
+                            ${shiny ? `${classes.starShiny}` : null}
+                        `}
+                    >
+                        {!shiny ? <StarEmpty /> : <StarFull className={classes.starIcon.starFull}/>}
+                    </IconButton>
+                </Tooltip>
+
+                <img 
+                    src={shiny ? pokemonInfo.sprites.front_shiny : pokemonInfo.sprites.front_default} 
+                    alt="" 
+                    className={classes.imagePokemon}
+                ></img >
+
+                <Typography variant="h4">
                     {pokemonInfo.name}
                 </Typography>
 
@@ -66,22 +101,7 @@ export default function About(props) {
 
                 <p>Experience: {pokemonInfo.base_experience}</p>
                 <p>Height: {pokemonInfo.height}</p>
-                <ul>
-                    Stats
-                    {
-                        pokemonInfo.stats.forEach((stat, index) => {
-                            /* return (
-                                <li key={index}>
-                                    {stat.stat.name}
-                                    -
-                                    {stat.base_stat}
-                                </li>
-                            ) */
-                        })
-                    }
-                </ul>
                 <ChartStats data={pokemonStatsArray} />
-                <img src={pokemonInfo.sprites.front_shiny} alt="" className={classes.imagePokemon}></img >
             </Card>
         </Drawer>
     )
