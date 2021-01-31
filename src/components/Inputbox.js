@@ -7,7 +7,7 @@ export default function InputBox(props) {
             <TextField 
                 fullWidth 
                 placeholder="Search pokemon..." 
-                variant="filled" 
+                variant="outlined" 
                 onChange={ props.onChangePokemon }
             />
         </Box>
