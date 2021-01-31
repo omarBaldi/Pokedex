@@ -5,13 +5,14 @@ import InputBox from './components/Inputbox';
 import Pokemon from './components/Pokemon';
 import PokemonInfo from './components/PokemonInfo';
 import { Route } from 'react-router-dom';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Select, MenuItem } from '@material-ui/core';
 
 function App() {
 
 	const [pokemonToSearch, setPokemonToSearch] = useState('');
 	const [pokemonsArray, setPokemonsArray] = useState([]);
 	const [filteredPokemonsArray, setFilteredPokemonsArray] = useState([]);
+	const [pokemonGen, setPokemonGen] = useState(null || 1);
 
 	const handleInputChange = (e) => {
 		const currentText = e.target.value;
@@ -21,20 +22,25 @@ function App() {
 	const getPokemons = async () => {
 		const response = await axios({
 			method: 'GET',
-			url: 'https://pokeapi.co/api/v2/pokemon?limit=151'
-		})
-		
-		const { results } = response.data;
-		return results;
-	}  
+			url: `https://pokeapi.co/api/v2/generation/${pokemonGen}`
+		});
+		const { pokemon_species: pokemons } = response.data;
+		return pokemons
+	}
+
+	const handlePokemonGenChange = (e) => {
+		const gen = e.target.value; 
+		setPokemonGen(gen);
+	};
 
 	useEffect(() => {
 		(async () => {
-		const pokemonsList = await getPokemons();
-		setPokemonsArray(pokemonsList);
-		setFilteredPokemonsArray(pokemonsList);
+			const pokemonsList = await getPokemons();
+			setPokemonsArray(pokemonsList);
+			setFilteredPokemonsArray(pokemonsList);
 		})();
-	}, []);
+	}, [pokemonGen]);
+
 
 	useMemo(() => {
 		if (!pokemonToSearch) {
@@ -50,6 +56,44 @@ function App() {
 		<Container>
 
 			<InputBox onChangePokemon={handleInputChange} />
+
+			<Select
+				value={pokemonGen}
+				onChange={($event) => handlePokemonGenChange($event)}
+				>
+					{
+						[
+							{
+								title: 'First gen',
+								value: 1
+							},
+							{
+								title: 'Second gen',
+								value: 2
+							},
+							{
+								title: 'Third gen',
+								value: 3
+							},
+							{
+								title: 'Fourth gen',
+								value: 4
+							},
+							{
+								title: 'Fifth gen',
+								value: 5
+							},
+							{
+								title: 'Sixth gen',
+								value: 6
+							},
+						].map((gen, index) => {
+							return (
+								<MenuItem key={index} value={gen.value}>{ gen.title }</MenuItem>
+							)
+						})
+					}
+			</Select>
 
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
