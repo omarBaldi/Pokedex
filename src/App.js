@@ -5,6 +5,7 @@ import axios from 'axios';
 import InputBox from './components/Inputbox';
 import Pokemon from './components/Pokemon';
 import PokemonInfo from './components/PokemonInfo';
+import ScrollTopButton from './components/ScrollTopButton';
 import { Route } from 'react-router-dom';
 import { Container, Grid, Select, MenuItem } from '@material-ui/core';
 
@@ -66,6 +67,8 @@ function App() {
 
 	return (
 		<Container>
+
+			<ScrollTopButton />
 
 			<InputBox onChangePokemon={handleInputChange} />
 

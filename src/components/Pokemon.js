@@ -80,7 +80,7 @@ export default function Pokemon(props) {
                 <Card className={classes.root}>
                     <img src={!pokemonBack ? pokemonData.sprites.front_default : pokemonData.sprites.back_default} alt=""></img>
                     <CardContent>
-                        <IconButton className={classes.iconRotate} onClick={() => setPokemonBack((value) => !value)}>
+                        <IconButton className={classes.iconRotate} onClick={() => setPokemonBack(!pokemonBack)}>
                             <RotateIcon />
                         </IconButton>
                         <Typography variant="h4">
