@@ -37,6 +37,7 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
+
 			const pokemonsList = await getPokemons();
 
 			const sortedPokemonsList = pokemonsList.reduce((accumulator, current) => {
@@ -70,45 +71,51 @@ function App() {
 
 			<ScrollTopButton />
 
-			<InputBox onChangePokemon={handleInputChange} />
-
-			<Select
-				value={pokemonGen}
-				onChange={($event) => handlePokemonGenChange($event)}
-				>
-					{
-						[
-							{
-								title: 'First gen',
-								value: 1
-							},
-							{
-								title: 'Second gen',
-								value: 2
-							},
-							{
-								title: 'Third gen',
-								value: 3
-							},
-							{
-								title: 'Fourth gen',
-								value: 4
-							},
-							{
-								title: 'Fifth gen',
-								value: 5
-							},
-							{
-								title: 'Sixth gen',
-								value: 6
-							},
-						].map((gen, index) => {
-							return (
-								<MenuItem key={index} value={gen.value}>{ gen.title }</MenuItem>
-							)
-						})
-					}
-			</Select>
+			<Grid container spacing={3}>
+				<Grid item xs={9}>
+					<InputBox onChangePokemon={handleInputChange} />
+				</Grid>
+				<Grid item xs={3}>
+					<Select
+						value={pokemonGen}
+						onChange={($event) => handlePokemonGenChange($event)}
+						variant="outlined"
+					>
+						{
+							[
+								{
+									title: 'First gen',
+									value: 1
+								},
+								{
+									title: 'Second gen',
+									value: 2
+								},
+								{
+									title: 'Third gen',
+									value: 3
+								},
+								{
+									title: 'Fourth gen',
+									value: 4
+								},
+								{
+									title: 'Fifth gen',
+									value: 5
+								},
+								{
+									title: 'Sixth gen',
+									value: 6
+								},
+							].map((gen, index) => {
+								return (
+									<MenuItem key={index} value={gen.value}>{ gen.title }</MenuItem>
+								)
+							})
+						}
+					</Select>
+				</Grid>
+			</Grid>
 
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
