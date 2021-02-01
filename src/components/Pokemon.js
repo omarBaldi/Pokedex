@@ -70,7 +70,6 @@ export default function Pokemon(props) {
             const pokemonDescription = await getPokemonDescription(pokemonData.species.url);
             pokemonData["pokemonDescription"] = pokemonDescription;
             setPokemonData(pokemonData);
-            console.log(pokemonData);
         })();
     }, [name])
 

@@ -37,8 +37,19 @@ function App() {
 	useEffect(() => {
 		(async () => {
 			const pokemonsList = await getPokemons();
-			setPokemonsArray(pokemonsList);
-			setFilteredPokemonsArray(pokemonsList);
+
+			const sortedPokemonsList = pokemonsList.reduce((accumulator, current) => {
+					const URL = current.url;
+					const numberURL = Number(URL.split('/').filter(item => item).splice(-1));
+					return [...accumulator, {
+						...current,
+						pokemonIndex: numberURL
+					}]
+				}, [])
+				.sort((a, b) => a.pokemonIndex - b.pokemonIndex);
+
+			setPokemonsArray(sortedPokemonsList);
+			setFilteredPokemonsArray(sortedPokemonsList);
 		})();
 	}, [pokemonGen]);
 
